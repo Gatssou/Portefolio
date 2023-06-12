@@ -118,7 +118,7 @@ dracoLoader.setDecoderPath('draco/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 gltfLoader.load(
-  'models/room3.glb',
+  'models/room7.glb',
   function (room) {
     // hide loader on loade
     loaderWrapper.style.display = 'none';
