@@ -99,7 +99,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 // const stats = new Stats();
 // document.querySelector('.experience').appendChild(stats.dom);
 
-// CONTROLS
+// Contrôle
 const controls = new OrbitControls(camera, renderer.domElement);
 // controls.enableDamping = true;
 controls.enablePan = false;
