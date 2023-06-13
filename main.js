@@ -125,7 +125,7 @@ gltfLoader.load(
 
     // load video
     const video = document.createElement('video');
-    video.url = 'textures/pokemonn.mp4';
+    video.src = 'textures/pokemonn.mp4';
     video.muted = true;
     video.playsInline = true;
     video.autoplay = true;
