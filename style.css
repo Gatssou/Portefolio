@@ -31,7 +31,11 @@
   margin: 0;
   padding: 0;
 }
-
+canvas {
+  position: fixed;
+  top:0;
+  left: 0;
+}
 .light-theme {
   --color-text: var(--color-text-light);
   --color-background: var(--color-background-light);

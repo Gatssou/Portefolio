@@ -1,8 +1,8 @@
 import './style.css';
 import * as THREE from 'three';
-import * as dat from 'dat.gui';
+
 import gsap from 'gsap';
-import Stats from 'three/addons/libs/stats.module.js';
+
 import { OrbitControls } from 'three/addons/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
@@ -95,13 +95,11 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-// STATS
-// const stats = new Stats();
-// document.querySelector('.experience').appendChild(stats.dom);
+
 
 // Contrôle
 const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enableDamping = true;
+
 controls.enablePan = false;
 controls.minDistance = 0.9;
 controls.maxDistance = 1.6;
@@ -111,8 +109,8 @@ controls.minPolarAngle = 0.3;
 controls.maxPolarAngle = Math.PI / 2;
 controls.update();
 
-// LOAD MODEL & ASSET
-// const loadingManager = new THREE.LoadingManager();
+
+// chargement room 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('draco/');
 const gltfLoader = new GLTFLoader();
@@ -120,10 +118,10 @@ gltfLoader.setDRACOLoader(dracoLoader);
 gltfLoader.load(
   'models/room9.glb',
   function (room) {
-    // hide loader on loade
+    // hide on buuuuu cacher
     loaderWrapper.style.display = 'none';
 
-    // load video
+    // chargementvideo
     const video = document.createElement('video');
     video.src = 'textures/pokemonn.mp4';
     video.muted = true;
@@ -131,7 +129,7 @@ gltfLoader.load(
     video.autoplay = true;
     video.loop = true;
 
-    // create video texture
+    // texture video
     const videoTexture = new THREE.VideoTexture(video);
     videoTexture.minFilter = THREE.NearestFilter;
     videoTexture.magFilter = THREE.NearestFilter;
@@ -139,7 +137,7 @@ gltfLoader.load(
     videoTexture.encoding = THREE.sRGBEncoding;
 
     room.scene.children.forEach((child) => {
-      // disable shadow by wall
+      // ombre mur 
       if (child.name !== 'Wall') {
         child.castShadow = true;
       }
@@ -147,7 +145,7 @@ gltfLoader.load(
 
       if (child.children) {
         child.children.forEach((innerChild) => {
-          // disable shadow by book cover & switch btn
+          // ombre livre, switch
           if (innerChild.name !== 'Book001' && innerChild.name !== 'Switch') {
             innerChild.castShadow = true;
           }
@@ -162,7 +160,7 @@ gltfLoader.load(
         video.play();
       }
 
-      // transparent texture for glass
+      // texture transparente 
       if (child.name === 'CPU') {
         child.children[0].material = new THREE.MeshPhysicalMaterial();
         child.children[0].material.roughness = 0;
@@ -204,7 +202,7 @@ gltfLoader.load(
     scene.add(room.scene);
     animate();
 
-    // add animation
+    // animation 
     mixer = new THREE.AnimationMixer(room.scene);
     const clips = room.animations;
     clipNames.forEach((clipName) => {
@@ -217,7 +215,7 @@ gltfLoader.load(
 
     loadIntroText();
 
-    // add event listeners
+    // event
     logoListener();
     aboutMenuListener();
     projectsMenuListener();
@@ -229,7 +227,7 @@ gltfLoader.load(
   }
 );
 
-// ADD LIGHT
+// ADD ambiant lumière
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
 scene.add(ambientLight);
 const roomLight = new THREE.PointLight(0xffffff, 2.5, 10);
@@ -239,10 +237,10 @@ roomLight.shadow.radius = 5;
 roomLight.shadow.mapSize.width = 2048;
 roomLight.shadow.mapSize.height = 2048;
 roomLight.shadow.camera.far = 2.5;
-// roomLight.shadow.camera.fov = 100;
+// camera.fov = 100;
 roomLight.shadow.bias = -0.002;
 scene.add(roomLight);
-// add light for pc fans
+// alumière des ventilateur ordi
 const fanLight1 = new THREE.PointLight(0xff0000, 30, 0.2);
 const fanLight2 = new THREE.PointLight(0x00ff00, 30, 0.12);
 const fanLight3 = new THREE.PointLight(0x00ff00, 30, 0.2);
@@ -258,7 +256,7 @@ scene.add(fanLight2);
 scene.add(fanLight3);
 scene.add(fanLight4);
 scene.add(fanLight5);
-// add point light for text on wall
+// lumière texte Mur 
 const pointLight1 = new THREE.PointLight(0xff0000, 0, 1.1);
 const pointLight2 = new THREE.PointLight(0xff0000, 0, 1.1);
 const pointLight3 = new THREE.PointLight(0xff0000, 0, 1.1);
@@ -272,32 +270,7 @@ scene.add(pointLight2);
 scene.add(pointLight3);
 scene.add(pointLight4);
 
-// SETUP HELPERS
-// const axesHelper = new THREE.AxesHelper(5);
-// scene.add(axesHelper);
-// const gridHelper = new THREE.GridHelper(30, 30);
-// scene.add(gridHelper);
-// const shadowCameraHelper = new THREE.CameraHelper(roomLight.shadow.camera);
-// scene.add(shadowCameraHelper);
-// const pointLightHelper = new THREE.PointLightHelper(fanLight3, 0.03);
-// scene.add(pointLightHelper);
 
-// ADD GUI
-// const gui = new dat.GUI();
-// const options = {
-//   lightX: 0,
-//   lightY: 0.08,
-//   lightZ: 0,
-// };
-// gui.add(options, 'lightX').onChange((e) => {
-//   mobileLight.position.setX(e);
-// });
-// gui.add(options, 'lightY').onChange((e) => {
-//   mobileLight.position.setY(e);
-// });
-// gui.add(options, 'lightZ').onChange((e) => {
-//   mobileLight.position.setZ(e);
-// });
 
 const clock = new THREE.Clock();
 function animate() {
@@ -354,7 +327,7 @@ function switchTheme(themeType) {
     document.body.classList.remove('light-theme');
     document.body.classList.add('dark-theme');
 
-    // main lights
+    // lumière room
     gsap.to(roomLight.color, {
       r: 0.27254901960784313,
       g: 0.23137254901960785,
@@ -372,12 +345,12 @@ function switchTheme(themeType) {
       intensity: 0.3,
     });
 
-    // fan lights
+    // lumière venti
     gsap.to(fanLight5, {
       distance: 0.07,
     });
 
-    // text color
+    // texte color
     gsap.to(titleText.material[0].color, {
       r: 8,
       g: 8,
@@ -403,7 +376,7 @@ function switchTheme(themeType) {
       duration: 0,
     });
 
-    // text light
+    // texte lumière
     gsap.to(pointLight1, {
       intensity: 0.6,
     });
@@ -421,7 +394,7 @@ function switchTheme(themeType) {
     document.body.classList.remove('dark-theme');
     document.body.classList.add('light-theme');
 
-    // main light
+    // lumière room 
     gsap.to(roomLight.color, {
       r: 1,
       g: 1,
@@ -439,12 +412,12 @@ function switchTheme(themeType) {
       intensity: 0.6,
     });
 
-    // fan light
+    // venti lumière
     gsap.to(fanLight5, {
       distance: 0.05,
     });
 
-    // text color
+    // texte color
     gsap.to(titleText.material[0].color, {
       r: 0.09019607843137255,
       g: 0.12156862745098039,
@@ -470,7 +443,7 @@ function switchTheme(themeType) {
       duration: 0,
     });
 
-    // text light
+    // texte lumière
     gsap.to(pointLight1, {
       intensity: 0,
     });
@@ -547,7 +520,7 @@ function resetCamera() {
   });
   gsap.delayedCall(1.5, enableOrbitControls);
 
-  // reset dimmed light for about display
+  // si theme egal dark
   if (theme !== 'dark') {
     gsap.to(roomLight, {
       intensity: 2.5,
@@ -580,7 +553,7 @@ function cameraToAbout() {
     delay: 1.5,
   });
 
-  // prevent about text clutter due to bright light
+  
   if (theme !== 'dark') {
     gsap.to(roomLight, {
       intensity: 1,
@@ -600,7 +573,7 @@ function aboutMenuListener() {
 }
 
 function projectsMenuListener() {
-  // create project planes with textures
+  // cration sol
   projects.forEach((project, i) => {
     const colIndex = i % 3 === 0 ? 0 : 1;
     const rowIndex = Math.floor(i / 3);
@@ -622,7 +595,7 @@ function projectsMenuListener() {
       -1.15
     );
     projectPlane.scale.set(0, 0, 0);
-    // mesh & y vars needed for animation
+    // mesh / blender aniamtion
     projects[i].mesh = projectPlane;
     projects[i].y = 1 - rowIndex * 0.5;
     scene.add(projectPlane);
@@ -644,7 +617,7 @@ function projectsMenuListener() {
       });
       gsap.delayedCall(1.5, enableCloseBtn);
 
-      // animate & show project items
+      // animation boucle
       projects.forEach((project, i) => {
         project.mesh.scale.set(1, 1, 1);
         gsap.to(project.mesh.material, {
@@ -667,10 +640,10 @@ function init3DWorldClickListeners() {
   let intersects;
 
   window.addEventListener('click', function (e) {
-    // store value set to prevent multi time update in foreach loop
+    // boucle theme
     const newTheme = theme === 'light' ? 'dark' : 'light';
 
-    // prevent about focus on button click which are positioned above book in mobile view
+    // Cible
     const closeBtn = document.getElementById('close-btn');
     const projectsBtn = document.getElementById('projects-menu');
     if (
@@ -712,7 +685,7 @@ function init3DWorldClickListeners() {
   });
 }
 
-// RESPONSIVE
+// responsive
 function initResponsive(roomScene) {
   if (isMobile) {
     roomScene.scale.set(0.95, 0.95, 0.95);
@@ -727,10 +700,7 @@ function initResponsive(roomScene) {
       z: 1.57,
     };
 
-    // rect light
-    // rectLight.width = 0.406;
-    // rectLight.height = 0.3;
-    // rectLight.position.z = -0.34;
+    
 
     // project
     projectsCameraPos = {
@@ -752,13 +722,13 @@ function initResponsive(roomScene) {
   }
 }
 
-// close button
+// bouton fermé
 document.getElementById('close-btn').addEventListener('click', (e) => {
   e.preventDefault();
   resetCamera();
 });
 
-// contact menu
+// menu ctc
 document.getElementById('contact-btn').addEventListener('click', (e) => {
   e.preventDefault();
   document
@@ -775,7 +745,7 @@ document.addEventListener('mouseup', (e) => {
   }
 });
 
-// update camera, renderer on resize
+// update camera, resize
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
