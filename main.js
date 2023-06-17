@@ -109,7 +109,7 @@ controls.minPolarAngle = 0.3;
 controls.maxPolarAngle = Math.PI / 2;
 controls.update();
 
-
+const loader = new GLTFLoader();
 // chargement room 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('draco/');
